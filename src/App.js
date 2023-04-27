@@ -1,4 +1,5 @@
 import Pallete from "./Pallete";
+
 import seedColors from "./seedColors";
 
 import React, { Component } from "react";
