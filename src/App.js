@@ -8,7 +8,7 @@ export default class App extends Component {
 
 		return (
 			<>
-				<Palette {...seedColors[4]} />
+				<Palette palette={generatePalette(seedColors[4])} />
 			</>
 		);
 	}
