@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Navbar from "./Navbar";
 import ColorBox from "./ColorBox";
 import "./Palette.css";
@@ -10,6 +11,7 @@ export default class Palette extends Component {
 		this.changeLevel = this.changeLevel.bind(this);
 		this.changeColorFormat = this.changeColorFormat.bind(this);
 	}
+
 	changeLevel(level) {
 		this.setState({ level });
 	}
