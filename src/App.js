@@ -3,7 +3,7 @@ import { Route, Routes, useParams } from "react-router-dom";
 import { generatePalette } from "./colorHelpers";
 import Palette from "./Palette";
 import seedColors from "./seedColors";
-
+import PaletteList from "./PaletteList";
 function findPalette(id) {
 	return seedColors.find((color) => color.id === id);
 }
@@ -16,12 +16,8 @@ function Pal() {
 export default function App() {
 	return (
 		<Routes>
-			<Route path="/" element={<h1>1</h1>} />
+			<Route path="/" element={<PaletteList palettes={seedColors} />} />
 			<Route path="/palette/:id" element={<Pal />} />
 		</Routes>
-
-		// <>
-		// 	<Palette palette={generatePalette(seedColors[4])} />
-		// </>
 	);
 }
