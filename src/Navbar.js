@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Slider, { Range } from "rc-slider";
 import { Link } from "react-router-dom";
 import { Snackbar, Select, MenuItem, IconButton } from "@mui/material";
+
 import { Close as CloseIcon } from "@mui/icons-material";
 import "rc-slider/assets/index.css";
 import "./Navbar.css";
