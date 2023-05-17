@@ -10,6 +10,7 @@ const useStyles = createUseStyles({
 		display: "flex",
 		alignItems: "flex-start",
 		justifyContent: "center",
+		height: "100vh",
 	},
 	container: {
 		width: "50%",
@@ -44,7 +45,7 @@ export default function PaletteList(props) {
 				</nav>
 				<div className={classes.palettes}>
 					{palettes.map((palette) => {
-						return <MiniPalette {...palette} />;
+						return <MiniPalette key={palette.id} {...palette} />;
 					})}
 				</div>
 			</div>

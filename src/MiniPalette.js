@@ -14,7 +14,11 @@ const useStyles = createUseStyles({
 		},
 	},
 	colors: {
-		backgroundColor: "grey",
+		backgroundColor: "lightgray",
+		height: "150px",
+		width: "100%",
+		borderRadius: "5px",
+		overflow: "hidden",
 	},
 	title: {
 		display: "flex",
@@ -30,13 +34,30 @@ const useStyles = createUseStyles({
 		marginLeft: "0.5rem",
 		fontSize: "1.5rem",
 	},
+	miniColor: {
+		width: "20%",
+		height: "25%",
+		display: "inline-block",
+		marginLeft: "0 auto",
+		position: "relative",
+		marginBottom: "-3.5px",
+	},
 });
 export default function MiniPalette(props) {
-	const { paletteName, emoji } = props;
+	const { paletteName, emoji, colors, id } = props;
 	const classes = useStyles();
+	const miniColorBoxes = colors.map((color) => {
+		return (
+			<div
+				className={classes.miniColor}
+				style={{ backgroundColor: color.color }}
+				key={color.name}
+			></div>
+		);
+	});
 	return (
 		<div className={classes.root}>
-			<div className={classes.colors}></div>
+			<div className={classes.colors}>{miniColorBoxes}</div>
 			<h5 className={classes.title}>
 				{paletteName} <span className={classes.emoji}>{emoji}</span>
 			</h5>
