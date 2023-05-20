@@ -1,42 +1,61 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { createUseStyles } from "react-jss";
 
 import Navbar from "./Navbar";
 import ColorBox from "./ColorBox";
 import "./Palette.css";
 
-export default class Palette extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { level: 500, format: "hex" };
-		this.changeLevel = this.changeLevel.bind(this);
-		this.changeColorFormat = this.changeColorFormat.bind(this);
-	}
+const useStyles = createUseStyles({
+	Palette: {
+		height: "100vh",
+		display: "flex",
+		flexDirection: "column",
+	},
+	PaletteColors: {
+		height: "90%",
+	},
+	PaletteFooter: {
+		backgroundColor: "white",
+		height: "5hv",
+		display: "flex",
+		justifyContent: "flex-end",
+		alignItems: "center",
+		fontWeight: "bold",
+	},
+	emoji: {
+		fontSize: "1.5rem",
+		margin: "1rem 0",
+	},
+});
 
-	changeLevel(level) {
-		this.setState({ level });
+export default function Palette(props) {
+	const [level, setLevel] = useState(100);
+	const [format, setFormat] = useState("hex");
+	const classes = useStyles();
+
+	function changeLevel(level) {
+		setLevel(level);
 	}
-	changeColorFormat(evt) {
-		this.setState({ format: evt });
+	function changeColorFormat(evt) {
+		setFormat(evt);
 	}
-	render() {
-		const { colors, paletteName, emoji } = this.props.palette;
-		const { level, format } = this.state;
-		const colorBoxes = colors[level].map((color) => (
-			<ColorBox background={color[format]} name={color.name} key={color.id} />
-		));
-		return (
-			<div className="Palette">
-				<Navbar
-					level={level}
-					changeLevel={this.changeLevel}
-					handleChange={this.changeColorFormat}
-				/>
-				<div className="Palette-colors">{colorBoxes}</div>
-				<footer className="Palette-footer">
-					{paletteName}
-					<span className="emoji">{emoji}</span>
-				</footer>
-			</div>
-		);
-	}
+	const { colors, paletteName, emoji } = props.palette;
+	const colorBoxes = colors[level].map((color) => (
+		<ColorBox background={color[format]} name={color.name} key={color.id} />
+	));
+
+	return (
+		<div className={classes.Palette}>
+			<Navbar
+				level={classes.Palette}
+				changeLevel={changeLevel}
+				handleChange={changeColorFormat}
+			/>
+			<div className={classes.PaletteColors}>{colorBoxes}</div>
+			<footer className={classes.PaletteFooter}>
+				{paletteName}
+				<span className={classes.emoji}>{emoji}</span>
+			</footer>
+		</div>
+	);
 }

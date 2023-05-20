@@ -18,6 +18,10 @@ export default function App() {
 		<Routes>
 			<Route path="/" element={<PaletteList palettes={seedColors} />} />
 			<Route path="/palette/:id" element={<Pal />} />
+			<Route
+				path="/palette/:paletteId/:colorId"
+				element={<h1>singleColor</h1>}
+			/>
 		</Routes>
 	);
 }
