@@ -13,7 +13,10 @@ function Pal() {
 	const { id } = useParams();
 	return <Palette palette={generatePalette(findPalette(id))} />;
 }
-
+function SinglePalette() {
+	const { paletteId, colorId } = useParams();
+	return <SingleColorPalette  palette={generatePalette(findPalette(paletteId))} colorId={colorId}/>;
+}
 export default function App() {
 	return (
 		<Routes>
@@ -21,7 +24,7 @@ export default function App() {
 			<Route path="/palette/:id" element={<Pal />} />
 			<Route
 				path="/palette/:paletteId/:colorId"
-				element={<SingleColorPalette />}
+				element={<SinglePalette />}
 			/>
 		</Routes>
 	);
