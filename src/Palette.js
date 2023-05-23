@@ -3,6 +3,7 @@ import { createUseStyles } from "react-jss";
 
 import Navbar from "./Navbar";
 import ColorBox from "./ColorBox";
+import PaletteFooter from "./PaletteFooter";
 import "./Palette.css";
 
 const useStyles = createUseStyles({
@@ -29,7 +30,7 @@ const useStyles = createUseStyles({
 });
 
 export default function Palette(props) {
-	const [level, setLevel] = useState(100);
+	const [level, setLevel] = useState(500);
 	const [format, setFormat] = useState("hex");
 	const classes = useStyles();
 
@@ -56,12 +57,10 @@ export default function Palette(props) {
 				level={level}
 				changeLevel={changeLevel}
 				handleChange={changeColorFormat}
+				showingAllColors={true}
 			/>
 			<div className={classes.PaletteColors}>{colorBoxes}</div>
-			<footer className={classes.PaletteFooter}>
-				{paletteName}
-				<span className={classes.emoji}>{emoji}</span>
-			</footer>
+			<PaletteFooter paletteName={paletteName} emoji={emoji}/>
 		</div>
 	);
 }

@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import ColorBox from "./ColorBox"
-export default class SingleColorPalette extends Component {
-  constructor(props) {
-    super(props);
-    this._shades = this.gatherShades(this.props.palette, this.props.colorId);
-  }
-  gatherShades(palette, colorToFilterBy) {
+import React, { useState } from "react";
+import ColorBox from "./ColorBox";
+import Navbar from "./Navbar";
+import PaletteFooter from "./PaletteFooter";
+export default function SingleColorPalette(props) {
+  const [format, setFormat] = useState("hex");
+  const _shades = gatherShades(props.palette, props.colorId);
+
+  function gatherShades(palette, colorToFilterBy) {
     let shades = [];
     let allColors = palette.colors;
     for (let key in allColors) {
@@ -15,10 +16,22 @@ export default class SingleColorPalette extends Component {
     }
     return shades.slice(1);
   }
-  render() {
-	const colorBoxes = this._shades.map((color)=><ColorBox key={color.id} showLink={false} name={color.name} background={color.hex}/>)
-    return <div className="Palette">
-	SingleColorPalette
-	<div className="Palette-colors">{colorBoxes}</div></div>;
-  }
+  function changeColorFormat(evt) {
+		setFormat(evt);
+	}
+  const colorBoxes = _shades.map((color) => (
+    <ColorBox
+      key={color.hex}
+      showLink={false}
+      name={color.name}
+      background={color[format]}
+    />
+  ));
+  return (
+    <div className="Palette">
+      <Navbar handleChange={changeColorFormat} showingAllColors={false}/>
+      <div className="Palette-colors">{colorBoxes}</div>
+	  <PaletteFooter paletteName={props.palette.paletteName} emoji={props.palette.emoji}/>
+    </div>
+  );
 }

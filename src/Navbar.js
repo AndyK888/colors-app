@@ -17,13 +17,13 @@ export default function Navbar(props) {
 	function closeSnackbar() {
 		setOpen(false);
 	}
-	const { level, changeLevel, handleChange } = props;
+	const { level, changeLevel, showingAllColors } = props;
 	return (
 		<header className="Navbar">
 			<div className="logo">
 				<Link to="/">reactcolorpicker</Link>
 			</div>
-			<div className="slider-container">
+			{showingAllColors && (<div className="slider-container">
 				<span>Level: {level}</span>
 				<div className="slider">
 					<Slider
@@ -34,7 +34,8 @@ export default function Navbar(props) {
 						onChange={changeLevel}
 					/>
 				</div>
-			</div>
+			</div>)}
+			
 			<div className="select-container">
 				<Select value={format} onChange={handleFormatChange}>
 					<MenuItem value="hex">HEX - #ffffff</MenuItem>
