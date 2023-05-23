@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Slider, { Range } from "rc-slider";
+import Slider from "rc-slider";
 import { Link } from "react-router-dom";
 import { Snackbar, Select, MenuItem, IconButton } from "@mui/material";
 
