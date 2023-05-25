@@ -4,6 +4,7 @@ import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import PaletteFooter from "./PaletteFooter";
 export default function SingleColorPalette(props) {
+
   const [format, setFormat] = useState("hex");
   const _shades = gatherShades(props.palette, props.colorId);
 
