@@ -24,7 +24,7 @@ export default function SingleColorPalette(props) {
   const colorBoxes = _shades.map((color) => (
     <ColorBox
       key={color.hex}
-      showLink={false}
+      showingFullPalette={false}
       name={color.name}
       background={color[format]}
     />
