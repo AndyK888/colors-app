@@ -3,8 +3,57 @@ import {Link} from "react-router-dom"
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import PaletteFooter from "./PaletteFooter";
-export default function SingleColorPalette(props) {
+import { createUseStyles } from "react-jss";
+const useStyles = createUseStyles({
+	Palette: {
+		height: "100vh",
+		display: "flex",
+		flexDirection: "column",
+	},
+  ColorBox: {
+    width: "20%",
+    height: "50%",
+    margin: "0 auto",
+    display: "inline-block",
+    position: "relative",
+    marginBottom: "-3.5px",
+    "&:hover": {
+      opacity: "1",
+      transition: "0.5s",
+    },
+    "&back-button":{
+      backgroundColor: "black",
+    }
+  },
+	PaletteColors: {
+		height: "90%",
+	},
+	PaletteFooter: {
+		backgroundColor: "white",
+		height: "5hv",
+		display: "flex",
+		justifyContent: "flex-end",
+		alignItems: "center",
+		fontWeight: "bold",
+	},
+	emoji: {
+		fontSize: "1.5rem",
+		margin: "1rem 0",
+	},
+  backButton: {
+    width: "20%",
+    height: "50%",
+    margin: "0 auto",
+    display: "inline-block",
+    position: "relative",
+    marginBottom: "-3.5px",
+    opacity: "1",
+    backgroundColor: "black"
+  }
+});
 
+export default function SingleColorPalette(props) {
+	const classes = useStyles();
   const [format, setFormat] = useState("hex");
   const _shades = gatherShades(props.palette, props.colorId);
 
@@ -30,11 +79,11 @@ export default function SingleColorPalette(props) {
     />
   ));
   return (
-    <div className="SingleColorPalette Palette">
+    <div className={classes.Palette}>
       <Navbar handleChange={changeColorFormat} showingAllColors={false} />
-      <div className="Palette-colors">
+      <div className={classes.PaletteColors}>
         {colorBoxes}
-        <div className="go-back ColorBox">
+        <div className={classes.backButton}>
           <Link to={`/palette/${props.palette.id}`} className="back-button">GO BACK</Link>
         </div>
       </div>

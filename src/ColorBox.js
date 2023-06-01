@@ -14,7 +14,7 @@ export default function ColorBox(props) {
       display: "inline-block",
       position: "relative",
       marginBottom: "-3.5px",
-      "&hover": {
+      "&:hover button": {
         opacity: "1",
         transition: "0.5s",
       },
@@ -101,7 +101,7 @@ export default function ColorBox(props) {
       transform: "scale(0.1)",
       opacity: 0,
       color: "white",
-      "& h1": {
+      "&h1": {
         fontWeight: 400,
         textShadow: "1px 2px black",
         background: "rgba(255, 255, 255, 0.3)",
@@ -111,7 +111,7 @@ export default function ColorBox(props) {
         padding: "1rem",
         textTransform: "uppercase",
       },
-      "& p": {
+      "&p": {
         fontSize: "2rem",
         fontWeight: 100,
       },
