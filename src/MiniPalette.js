@@ -1,10 +1,10 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
-import styles from "./styles/ColorBoxStyles"
-const useStyles = createUseStyles();
+import styles from "./styles/MiniPaletteStyles";
 export default function MiniPalette(props) {
+	const useStyles = createUseStyles(styles);
 	const { paletteName, emoji, colors } = props;
-	const classes = useStyles(styles);
+	const classes = useStyles(props);
 	const miniColorBoxes = colors.map((color) => {
 		return (
 			<div

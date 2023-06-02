@@ -8,7 +8,7 @@ import { createUseStyles } from "react-jss";
 const useStyles = createUseStyles(styles);
 
 export default function SingleColorPalette(props) {
-	const classes = useStyles();
+	const classes = useStyles(props);
   const [format, setFormat] = useState("hex");
   const _shades = gatherShades(props.palette, props.colorId);
 

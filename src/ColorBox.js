@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { createUseStyles } from "react-jss";
 export default function ColorBox(props) {
-  const { name, background, moreUrl, showingFullPalette } = props;
   const useStyles = createUseStyles(styles);
+  const { name, background, moreUrl, showingFullPalette } = props;
   const classes = useStyles(props);
   const [copied, setCopied] = useState(false);
   function changeCopyState() {

@@ -11,7 +11,7 @@ export default function PaletteList(props) {
 		navigate(`/palette/${id}`, { replace: true });
 	}
 	const { palettes } = props;
-	const classes = useStyles();
+	const classes = useStyles(props);
 	return (
 		<div className={classes.root}>
 			<div className={classes.container}>
