@@ -10,8 +10,11 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-
-const drawerWidth = 240;
+import { ChromePicker } from "react-color";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+const drawerWidth = 300;
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
@@ -107,6 +110,29 @@ export default function NewPaletteForm() {
           </IconButton>
         </DrawerHeader>
         <Divider />
+        <Typography variant="h4">Design your palette</Typography>
+        <Stack spacing={1} direction="row">
+          <Button variant="contained" color="secondary">
+            Clear Palette
+          </Button>
+          <Button variant="contained" color="primary">
+            Random Color
+          </Button>
+        </Stack>
+        <ChromePicker onChangeComplete={(newColor) => console.log(newColor)} />
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField id="standard-basic" label="Standard" variant="standard" />
+        </Box>
+        <Button variant="contained" color="primary">
+          Add Color
+        </Button>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
