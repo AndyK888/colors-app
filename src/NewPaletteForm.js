@@ -1,9 +1,10 @@
 import React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -60,83 +61,115 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function NewPaletteForm() {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+export default class NewPaletteForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      currentColor: "teal",
+      colors: ["purple", "orange"],
+    };
+    this.handleDrawerClose = this.handleDrawerClose.bind(this);
+    this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
+    this.updateCurrentColor = this.updateCurrentColor.bind(this);
+    this.addNewColor = this.addNewColor.bind(this);
+  }
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  handleDrawerOpen = () => {
+    this.setState({ open: true });
   };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+  handleDrawerClose = () => {
+    this.setState({ open: false });
   };
-
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Persistent drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <Typography variant="h4">Design your palette</Typography>
-        <Stack spacing={1} direction="row">
-          <Button variant="contained" color="secondary">
-            Clear Palette
-          </Button>
-          <Button variant="contained" color="primary">
-            Random Color
-          </Button>
-        </Stack>
-        <ChromePicker onChangeComplete={(newColor) => console.log(newColor)} />
-        <Box
-          component="form"
+  updateCurrentColor(newColor) {
+    console.log(newColor);
+    this.setState({ currentColor: newColor.hex });
+  }
+  addNewColor() {
+    this.setState({ colors: [...this.state.colors, this.state.currentColor] });
+  }
+  render() {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={this.state.open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={this.handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(this.state.open && { display: "none" }) }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Persistent drawer
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
           sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           }}
-          noValidate
-          autoComplete="off"
+          variant="persistent"
+          anchor="left"
+          open={this.state.open}
         >
-          <TextField id="standard-basic" label="Standard" variant="standard" />
-        </Box>
-        <Button variant="contained" color="primary">
-          Add Color
-        </Button>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-      </Main>
-    </Box>
-  );
+          <DrawerHeader>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <Typography variant="h4">Design your palette</Typography>
+          <Stack spacing={1} direction="row">
+            <Button variant="contained" color="secondary">
+              Clear Palette
+            </Button>
+            <Button variant="contained" color="primary">
+              Random Color
+            </Button>
+          </Stack>
+          <ChromePicker
+            color={this.state.currentColor}
+            onChangeComplete={this.updateCurrentColor}
+          />
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="standard-basic"
+              label="Standard"
+              variant="standard"
+            />
+          </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ backgroundColor: this.state.currentColor }}
+            onClick={this.addNewColor}
+          >
+            Add Color
+          </Button>
+        </Drawer>
+        <Main open={this.state.open}>
+          <DrawerHeader />
+          <ul>
+            {this.state.colors.map(color=><li style={{backgroundColor:color}}>{color}</li>)}
+          </ul>
+        </Main>
+      </Box>
+    );
+  }
 }
