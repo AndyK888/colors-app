@@ -1,5 +1,4 @@
 import React from "react";
-
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -11,10 +10,10 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { ChromePicker } from "react-color";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { ChromePicker } from "react-color";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DraggableColorBox from "./DraggableColorBox";
 
 const drawerWidth = 300;
@@ -70,14 +69,18 @@ export default class NewPaletteForm extends React.Component {
     this.state = {
       open: false,
       currentColor: "teal",
-      colors: ["purple", "orange"],
+      newName: "",
+      colors: [],
     };
     this.handleDrawerClose = this.handleDrawerClose.bind(this);
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
     this.updateCurrentColor = this.updateCurrentColor.bind(this);
     this.addNewColor = this.addNewColor.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
-
+  handleChange = (evt) => {
+    this.setState({ newName: evt.target.value });
+  };
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -88,8 +91,11 @@ export default class NewPaletteForm extends React.Component {
     console.log(newColor);
     this.setState({ currentColor: newColor.hex });
   }
-  addNewColor() {
-    this.setState({ colors: [...this.state.colors, this.state.currentColor] });
+  
+  addNewColor(e) {
+    e.preventDefault();
+    const newColor = {color: this.state.currentColor, name: this.state.newName}
+    this.setState({ colors: [...this.state.colors, newColor] });
   }
   render() {
     return (
@@ -143,34 +149,26 @@ export default class NewPaletteForm extends React.Component {
             color={this.state.currentColor}
             onChangeComplete={this.updateCurrentColor}
           />
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "25ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="standard-basic"
-              label="Standard"
-              variant="standard"
-            />
-          </Box>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ backgroundColor: this.state.currentColor }}
-            onClick={this.addNewColor}
-          >
-            Add Color
-          </Button>
+
+            <ValidatorForm onSubmit={this.addNewColor}>
+              <TextValidator
+                value={this.state.newName}
+                onChange={this.handleChange}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ backgroundColor: this.state.currentColor }}
+                type="submit"
+              >
+                Add Color
+              </Button>
+            </ValidatorForm>
         </Drawer>
         <Main open={this.state.open}>
           <DrawerHeader />
-
           {this.state.colors.map((color) => (
-            <DraggableColorBox color={color} />
+            <DraggableColorBox color={color.color} name={color.name}  />
           ))}
         </Main>
       </Box>
