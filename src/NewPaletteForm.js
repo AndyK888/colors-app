@@ -1,4 +1,5 @@
 import React from "react";
+
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -77,6 +78,7 @@ export default class NewPaletteForm extends React.Component {
     this.updateCurrentColor = this.updateCurrentColor.bind(this);
     this.addNewColor = this.addNewColor.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     ValidatorForm.addValidationRule("isColorNameUnique", (value) => {
@@ -102,20 +104,27 @@ export default class NewPaletteForm extends React.Component {
     console.log(newColor);
     this.setState({ currentColor: newColor.hex });
   }
-
+  handleSubmit() {
+    const newPalette = {
+      paletteName: 'New Test Palette',
+      colors: this.state.colors
+    }
+    this.props.savePalette(newPalette);
+    this.props.navHook('/')
+  }
   addNewColor(e) {
     e.preventDefault();
     const newColor = {
       color: this.state.currentColor,
       name: this.state.newName,
     };
-    this.setState({ colors: [...this.state.colors, newColor], newName: '' });
+    this.setState({ colors: [...this.state.colors, newColor], newName: "" });
   }
   render() {
     return (
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="fixed" open={this.state.open}>
+        <AppBar position="fixed" color="default" open={this.state.open}>
           <Toolbar>
             <IconButton
               color="inherit"
@@ -129,6 +138,9 @@ export default class NewPaletteForm extends React.Component {
             <Typography variant="h6" noWrap component="div">
               Persistent drawer
             </Typography>
+            <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+              Save Palette
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -164,14 +176,12 @@ export default class NewPaletteForm extends React.Component {
             onChangeComplete={this.updateCurrentColor}
           />
 
-          <ValidatorForm onSubmit={this.addNewColor} ref={"form"}>
+          <ValidatorForm onSubmit={this.addNewColor}>
             <TextValidator
               value={this.state.newName}
               onChange={this.handleChange}
               validators={["required"]}
-              errorMessages={[
-                "Enter a color name",
-              ]}
+              errorMessages={["Enter a color name"]}
             />
             <Button
               variant="contained"

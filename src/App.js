@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes, useParams, useNavigate } from "react-router-dom";
 import { generatePalette } from "./colorHelpers";
 import Palette from "./Palette";
 import seedColors from "./seedColors";
@@ -18,16 +18,21 @@ function SinglePalette() {
 	const { paletteId, colorId } = useParams();
 	return <SingleColorPalette  palette={generatePalette(findPalette(paletteId))} colorId={colorId}/>;
 }
-export default function App() {
-	return (
-		<Routes>
+
+export default function App(props) {
+	function savePalette(newPalette){
+		console.log(newPalette)
+	}
+		return (
+			<Routes>
 			<Route path="/" element={<PaletteList palettes={seedColors} />} />
-			<Route path="/palette/new" element={<NewPaletteForm/>}/>
+			<Route path="/palette/new" element={<NewPaletteForm navHook={useNavigate()} savePalette={savePalette}/>}/>
 			<Route path="/palette/:id" element={<Pal />} />
 			<Route
 				path="/palette/:paletteId/:colorId"
 				element={<SinglePalette />}
 			/>
 		</Routes>
-	);
+		);
+	
 }
