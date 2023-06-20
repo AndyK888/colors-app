@@ -72,6 +72,7 @@ export default class NewPaletteForm extends React.Component {
       currentColor: "",
       newName: "",
       colors: [],
+      newPaletteName: "",
     };
     this.handleDrawerClose = this.handleDrawerClose.bind(this);
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -140,6 +141,7 @@ export default class NewPaletteForm extends React.Component {
             <Typography variant="h6" noWrap component="div">
               Persistent drawer
             </Typography>
+            {/* <TextValidator value={this.state.newPaletteName}/> */}
             <Button variant="contained" color="primary" onClick={this.handleSubmit}>
               Save Palette
             </Button>
