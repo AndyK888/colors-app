@@ -1,38 +1,46 @@
 import * as React from "react";
+import { useState } from "react";
 import { Route, Routes, useParams, useNavigate } from "react-router-dom";
 import { generatePalette } from "./colorHelpers";
 import Palette from "./Palette";
 import seedColors from "./seedColors";
 import PaletteList from "./PaletteList";
-import NewPaletteForm from './NewPaletteForm'
+import NewPaletteForm from "./NewPaletteForm";
 import SingleColorPalette from "./SingleColorPalette";
-function findPalette(id) {
-	return seedColors.find((color) => color.id === id);
-}
-
-function Pal() {
-	const { id } = useParams();
-	return <Palette palette={generatePalette(findPalette(id))} />;
-}
-function SinglePalette() {
-	const { paletteId, colorId } = useParams();
-	return <SingleColorPalette  palette={generatePalette(findPalette(paletteId))} colorId={colorId}/>;
-}
 
 export default function App(props) {
-	function savePalette(newPalette){
-		console.log(newPalette)
+	const [palettes, setPalettes] = useState(seedColors)
+	function findPalette(id) {
+	  return palettes.find((color) => color.id === id);
 	}
-		return (
-			<Routes>
-			<Route path="/" element={<PaletteList palettes={seedColors} />} />
-			<Route path="/palette/new" element={<NewPaletteForm navHook={useNavigate()} savePalette={savePalette}/>}/>
-			<Route path="/palette/:id" element={<Pal />} />
-			<Route
-				path="/palette/:paletteId/:colorId"
-				element={<SinglePalette />}
-			/>
-		</Routes>
-		);
-	
+	function Pal() {
+	  const { id } = useParams();
+	  return <Palette palette={generatePalette(findPalette(id))} />;
+	}
+	function SinglePalette() {
+	  const { paletteId, colorId } = useParams();
+	  return (
+		<SingleColorPalette
+		  palette={generatePalette(findPalette(paletteId))}
+		  colorId={colorId}
+		/>
+	  );
+	}
+  function savePalette(newPalette) {
+	  setPalettes([...palettes, newPalette])
+	  console.log(palettes);
+  }
+  return (
+    <Routes>
+      <Route path="/" element={<PaletteList palettes={palettes} />} />
+      <Route
+        path="/palette/new"
+        element={
+          <NewPaletteForm navHook={useNavigate()} savePalette={savePalette} />
+        }
+      />
+      <Route path="/palette/:id" element={<Pal />} />
+      <Route path="/palette/:paletteId/:colorId" element={<SinglePalette />} />
+    </Routes>
+  );
 }

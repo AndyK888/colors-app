@@ -105,8 +105,10 @@ export default class NewPaletteForm extends React.Component {
     this.setState({ currentColor: newColor.hex });
   }
   handleSubmit() {
+    let newName = "New Test Palette"
     const newPalette = {
-      paletteName: 'New Test Palette',
+      paletteName: newName,
+      id: newName.toLowerCase().replace(/ /g, "-"),
       colors: this.state.colors
     }
     this.props.savePalette(newPalette);
