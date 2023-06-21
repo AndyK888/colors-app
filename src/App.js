@@ -36,7 +36,7 @@ export default function App(props) {
       <Route
         path="/palette/new"
         element={
-          <NewPaletteForm navHook={useNavigate()} savePalette={savePalette} />
+          <NewPaletteForm navHook={useNavigate()} savePalette={savePalette} palettes={palettes} />
         }
       />
       <Route path="/palette/:id" element={<Pal />} />
