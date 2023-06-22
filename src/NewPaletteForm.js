@@ -110,6 +110,11 @@ export default class NewPaletteForm extends React.Component {
     console.log(newColor);
     this.setState({ currentColor: newColor.hex });
   }
+  removeColor(colorName) {
+    this.setState({ 
+      colors: this.state.colors.filter(color => color.name !== colorName)
+     });
+  }
   handleSubmit() {
     let newName = this.state.newPaletteName;
     const newPalette = {
@@ -218,7 +223,7 @@ export default class NewPaletteForm extends React.Component {
         <Main open={this.state.open}>
           <DrawerHeader />
           {this.state.colors.map((color) => (
-            <DraggableColorBox color={color.color} name={color.name} />
+            <DraggableColorBox key={color.name} color={color.color} name={color.name} handleClick={()=> this.removeColor(color.name)} />
           ))}
         </Main>
       </Box>
