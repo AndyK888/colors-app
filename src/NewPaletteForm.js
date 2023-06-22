@@ -15,8 +15,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { ChromePicker } from "react-color";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import DraggableColorBox from "./DraggableColorBox";
-
+import DraggableColorList from "./DraggableColorList";
+import {arrayMoveImmutable} from "array-move"
 const drawerWidth = 300;
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -80,6 +80,8 @@ export default class NewPaletteForm extends React.Component {
     this.addNewColor = this.addNewColor.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.removeColor = this.removeColor.bind(this);
+    this.onSortEnd = this.onSortEnd.bind(this);
   }
   componentDidMount() {
     ValidatorForm.addValidationRule("isColorNameUnique", (value) => {
@@ -136,6 +138,11 @@ export default class NewPaletteForm extends React.Component {
       newColorName: "",
     });
   }
+  onSortEnd = ({oldIndex, newIndex}) => {
+    this.setState(({colors}) => ({
+      colors: arrayMoveImmutable(colors, oldIndex, newIndex),
+    }));
+  };
   render() {
     return (
       <Box sx={{ display: "flex" }}>
@@ -160,8 +167,8 @@ export default class NewPaletteForm extends React.Component {
                 name="newPaletteName"
                 onChange={this.handleChange}
                 value={this.state.newPaletteName}
-                validators={["required", "isPaletteNameUnique"]}
-                errorMessages={["enter palette name", "Name is already used"]}
+                validators={["required"]}
+                errorMessages={["enter palette name"]}
               />
               <Button variant="contained" color="primary" type="submit">
                 Save Palette
@@ -222,9 +229,7 @@ export default class NewPaletteForm extends React.Component {
         </Drawer>
         <Main open={this.state.open}>
           <DrawerHeader />
-          {this.state.colors.map((color) => (
-            <DraggableColorBox key={color.name} color={color.color} name={color.name} handleClick={()=> this.removeColor(color.name)} />
-          ))}
+          <DraggableColorList colors={this.state.colors} removeColor={this.removeColor} axis="xy" onSortEnd={this.onSortEnd}  />
         </Main>
       </Box>
     );

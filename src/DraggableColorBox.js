@@ -1,6 +1,7 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { SortableElement } from "react-sortable-hoc";
 const styles = {
   root: {
     width: "20%",
@@ -33,7 +34,7 @@ const styles = {
 };
 const useStyles = createUseStyles(styles);
 
-export default function DraggableColorBox(props) {
+const DraggableColorBox = SortableElement((props) => {
   const {color, handleClick, name} = props;
   const classes = useStyles(props);
   return (
@@ -47,4 +48,5 @@ export default function DraggableColorBox(props) {
       </div>
     </div>
   );
-}
+})
+export default DraggableColorBox
