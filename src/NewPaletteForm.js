@@ -253,12 +253,14 @@ export default class NewPaletteForm extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              style={{ backgroundColor: paletteIsFull
-                  ? "grey" : this.state.currentColor }}
+              style={{
+                backgroundColor: paletteIsFull
+                  ? "grey"
+                  : this.state.currentColor,
+              }}
               type="submit"
             >
               {paletteIsFull ? "Palette is full" : "Add Color"}
-
             </Button>
           </ValidatorForm>
         </Drawer>
