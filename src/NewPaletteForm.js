@@ -1,5 +1,6 @@
 import React from "react";
-
+import PaletteFormNav from "./PaletteFormNav";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -38,22 +39,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   })
 );
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
+
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -75,7 +61,7 @@ export default class NewPaletteForm extends React.Component {
       currentColor: "",
       newColorName: "",
       colors: this.props.palettes[0].colors,
-      newPaletteName: "",
+      
     };
     this.handleDrawerClose = this.handleDrawerClose.bind(this);
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -97,11 +83,6 @@ export default class NewPaletteForm extends React.Component {
     ValidatorForm.addValidationRule("isColorUnique", () => {
       this.state.colors.every(({ color }) => color !== this.state.currentColor);
     });
-    ValidatorForm.addValidationRule("isPaletteNameUnique", (value) => {
-      this.props.palettes.every(
-        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-      );
-    });
   }
 
   handleChange = (evt) => {
@@ -122,11 +103,10 @@ export default class NewPaletteForm extends React.Component {
       colors: this.state.colors.filter((color) => color.name !== colorName),
     });
   }
-  handleSubmit() {
-    let newName = this.state.newPaletteName;
+  handleSubmit(newPaletteName) {
     const newPalette = {
-      paletteName: newName,
-      id: newName.toLowerCase().replace(/ /g, "-"),
+      paletteName: newPaletteName,
+      id: newPaletteName.toLowerCase().replace(/ /g, "-"),
       colors: this.state.colors,
     };
     this.props.savePalette(newPalette);
@@ -160,41 +140,12 @@ export default class NewPaletteForm extends React.Component {
     }));
   };
   render() {
-    const { maxColors } = this.props;
-    const { colors } = this.state;
+    const { maxColors, palettes } = this.props;
+    const { open, colors } = this.state;
     const paletteIsFull = colors.length >= maxColors;
     return (
       <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="fixed" color="default" open={this.state.open}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleDrawerOpen}
-              edge="start"
-              sx={{ mr: 2, ...(this.state.open && { display: "none" }) }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Persistent drawer
-            </Typography>
-            <ValidatorForm onSubmit={this.handleSubmit}>
-              <TextValidator
-                label="Palette Name"
-                name="newPaletteName"
-                onChange={this.handleChange}
-                value={this.state.newPaletteName}
-                validators={["required"]}
-                errorMessages={["enter palette name"]}
-              />
-              <Button variant="contained" color="primary" type="submit">
-                Save Palette
-              </Button>
-            </ValidatorForm>
-          </Toolbar>
-        </AppBar>
+        <PaletteFormNav handleSubmit={this.handleSubmit} open={open} palettes={palettes}/>
         <Drawer
           sx={{
             width: drawerWidth,
@@ -206,7 +157,7 @@ export default class NewPaletteForm extends React.Component {
           }}
           variant="persistent"
           anchor="left"
-          open={this.state.open}
+          open={open}
         >
           <DrawerHeader>
             <IconButton onClick={this.handleDrawerClose}>
@@ -264,7 +215,7 @@ export default class NewPaletteForm extends React.Component {
             </Button>
           </ValidatorForm>
         </Drawer>
-        <Main open={this.state.open}>
+        <Main open={open}>
           <DrawerHeader />
           <DraggableColorList
             colors={colors}
