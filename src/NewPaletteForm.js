@@ -19,6 +19,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DraggableColorList from "./DraggableColorList";
 import { arrayMoveImmutable } from "array-move";
 const drawerWidth = 300;
+
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
@@ -40,7 +41,6 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 );
 
 
-
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -57,7 +57,7 @@ export default class NewPaletteForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      open: true,
       currentColor: "",
       newColorName: "",
       colors: this.props.palettes[0].colors,
@@ -160,7 +160,7 @@ export default class NewPaletteForm extends React.Component {
           open={open}
         >
           <DrawerHeader>
-            <IconButton onClick={this.handleDrawerClose}>
+            <IconButton onClick={this.handleDrawerOpen}>
               <ChevronLeftIcon />
             </IconButton>
           </DrawerHeader>
